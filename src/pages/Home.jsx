@@ -20,7 +20,7 @@ const Home = () => {
             // This part is rendered when snap.intro is true, it moves out when it's false
             <motion.section className='home' {...slideAnimation('left')}>
                 <motion.header {...slideAnimation("down")}>
-                <img src='./threejs.png' 
+                <img src='./logo.png' 
                 alt='logo'
                 className='w-8 h-8 object-contain'
                 />
@@ -28,8 +28,8 @@ const Home = () => {
 
                 <motion.div className='home-content' {...headContainerAnimation}>
                     <motion.div {...headTextAnimation}>
-                        <h1 className='head-text'>
-                            UNBRANDED <br className='x1:block hidden'/> AI
+                        <h1 className='head-text' style={{color : snap.color, textShadow: '0px 0px 1px white, 0px 0px 2px white'}}>
+                            UNBRANDED<br className='x1:block '/> AI
                         </h1>
                     </motion.div>
                     <motion.div {...headContentAnimation} className='flex flex-col gap-5'>

@@ -15,6 +15,7 @@ import {
   FilePicker,
   Tab,
 } from "../components";
+import { act } from "@react-three/fiber";
 // import { act } from "@react-three/fiber";
 
 const Customizer = () => {
@@ -33,13 +34,54 @@ const Customizer = () => {
   const generateTabContent = () => {
     switch(activeEditorTab){
       case "colorpicker" :  return <ColorPicker />
-      case "filepicker" : return <FilePicker />
+      case "filepicker" : return <FilePicker 
+        file = {file}
+        setFile = {setFile}
+        readFile = {readFile}
+      />
       case "aipicker" : return <AIPicker />
       default : break;
     }
-    console.log(activeEditorTab)
+  
   }
 
+  const handleDecals = (type,result) => {
+    const decaltype = DecalTypes[type]
+    state[decaltype.stateProperty] = result;
+
+    if(!activeFilterTab[decaltype.filterTab]){
+      handleActiveFilterTab(decaltype.filterTab)
+    } 
+  }
+
+  const handleActiveFilterTab = (tabName) => {
+    switch(tabName){
+      case "logoShirt": state.isLogoTexture = !activeFilterTab[tabName];
+        break;
+      case "stylishShirt" : state.isFullTexture = !activeFilterTab[tabName];
+      break;
+      default: 
+        state.isFullTexture = false;
+        state.isLogoTexture = true
+        break;
+    }
+
+    // set active filter tab to update the ui
+    setActiveFilterTab((prevState)=>{
+      return {
+        ...prevState,
+        [tabName]: !prevState[tabName]
+      }
+    })
+  }
+
+  const readFile = (type) => {
+    reader(file)
+    .then((result)=> {
+      handleDecals(type,result)
+      setActiveEditorTab('')
+    })
+  }
 
   return (
     <AnimatePresence>
@@ -68,7 +110,7 @@ const Customizer = () => {
           
        
 
-          <motion.div
+          {/* <motion.div
             className="absolute z-10 top-5 right-5"
             {...fadeAnimation}
           >
@@ -80,7 +122,7 @@ const Customizer = () => {
             >
 
             </CustomButton>
-          </motion.div>
+          </motion.div> */}
 
           <motion.div
           className="filtertabs-container"
@@ -91,8 +133,11 @@ const Customizer = () => {
                 key={tab.name}
                 tab={tab}
                 isFilterTab
-                isActiveTab = ""
-                handleClick = {()=>{}}
+                isActiveTab = {activeFilterTab[tab.name]}
+                handleClick = {()=>{
+                  handleActiveFilterTab(tab.name)
+
+                }}
                 />
               ))}
 

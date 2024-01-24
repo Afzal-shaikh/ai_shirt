@@ -7,11 +7,11 @@ export const EditorTabs = [
   },
   {
     name: "filepicker",
-    icon: fileIcon,
+    icon: swatch,
   },
   {
     name: "aipicker",
-    icon: ai,
+    icon: swatch,
   },
 ];
 
